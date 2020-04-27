@@ -12,14 +12,13 @@ def scrape(url):
         'referer': 'https://www.totalwine.com/store-info/massachusetts-natick/1701',
         'accept-language': 'en-US,en;q=0.9',
     }
-
     r = requests.get(url, headers=headers)
     return e.extract(r.text, base_url=url)
 
 with open("urls.txt",'r') as urllist, open('data.csv','w') as outfile:
     writer = csv.DictWriter(outfile, fieldnames=["Name","Price","Size","InStock","DeliveryAvailable","URL"],quoting=csv.QUOTE_ALL)
     writer.writeheader()
-    for url in urllist.readlines():
+    for url in urllist.read().splitlines():
         data = scrape(url) 
         if data:
             for r in data['Products']:
